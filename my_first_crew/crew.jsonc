@@ -9,7 +9,7 @@
   "tasks": [ //l'ordine delle tasks è importante perché sequenziale:
 { // task 1 del ricercatore, cerca le informazioni
 "name": "conduct_thorough_research_about_task",
-"description": "Effettua una ricerca sull'argomento {topic} utilizzando SerperDevTool. Effettua una sola ricerca e, dopo aver ricevuto i risultati, analizzali senza effettuare ulteriori ricerche. Seleziona le fonti più pertinenti tra quelle ottenute e utilizzale per preparare il report.",
+"description": "Leggi il contenuto del file programma.java presente nella cartella data utilizzando FileReaderTool. Analizza esclusivamente il codice contenuto nel file e prepara un breve report basato sulla sua analisi.",
 "expected_output": "Un report markdown conciso con massimo 3 fonti pertinenti. Per ogni fonte indica titolo, URL e una breve sintesi delle informazioni rilevanti (massimo 2 righe). Concludi con una sintesi generale dell'argomento di massimo 5 righe.",
 "agent": "academic_research_specialist"
 },

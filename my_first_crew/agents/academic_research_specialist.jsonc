@@ -3,7 +3,7 @@
   "goal": "Effettuare una ricerca sull'argomento {topic} e produrre un report basato sui risultati ottenuti.",
   "backstory": "Sei uno specialista nella ricerca e nell'analisi di informazioni accademiche. Presti attenzione all'attendibilità delle fonti e alla corretta sintesi delle informazioni.",
   "llm": "groq/openai/gpt-oss-120b",
-  "tools": ["SerperDevTool"],
+"tools": ["crewai_tools:SerperDevTool", "tools.file_reader:FileReaderTool"],
   "max_iter": 3,
   "settings": {
     "verbose": false,
