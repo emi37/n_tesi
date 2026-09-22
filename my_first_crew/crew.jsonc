@@ -1,61 +1,33 @@
 {
-  // Display name for this crew
   "name": "my_first_crew",
 
-  // Agents to include — each must have a matching agents/<name>.jsonc file
-  "agents": ["academic_research_specialist"],
-
-  // Task definitions — executed in order for sequential process
-  "tasks": [
-    {
-      // Task identifier
-      "name": "conduct_thorough_research_about_task",
-
-      // What the task should accomplish
-      // Use {placeholder} inputs here; crewai run prompts for missing values
-      "description": "Conduct thorough research about {topic}. Find at least 5 credible sources.",
-
-      // Clear definition of what the output should look like
-      "expected_output": "A structured markdown report with the 5 most relevant sources and their key findings.",
-
-      // Optional task guardrail(s) validate output before completion
-      // Use "guardrail" for one rule or "guardrails" for many
-      // Failed guardrails retry up to guardrail_max_retries times
-      // "guardrail": "Every factual claim needs context support.",
-      // "guardrails": [
-      //   "Every factual claim must be supported by context.",
-      //   "The answer must match the expected output format."
-      // ],
-      // "guardrail_max_retries": 2,
-
-      // Advanced task options:
-      // Docs: https://docs.crewai.com/concepts/tasks
-      // "type": "ConditionalTask",
-      // "condition": { "python": "my_project.conditions.should_run" },
-      // "output_json": { "python": "my_project.models.ReportOutput" },
-      // "output_pydantic": null,
-      // "response_model": null,
-      // "converter_cls": { "python": "my_project.converters.CustomConverter" },
-      // "markdown": false,
-      // "input_files": { "brief": "data/brief.txt" },
-      // "security_config": {},
-
-      // Which agent handles this task
-      "agent": "academic_research_specialist"
-
-      // "tools": [],
-      // "human_input": false,
-      // "async_execution": false
-    }
-
+  "agents": [
+    "academic_research_specialist",
+    "verificatore_ricerca"
   ],
 
-  // Execution process
-  // "sequential" — tasks run in order, each receiving prior task outputs
-  // "hierarchical" — a manager agent delegates tasks (requires manager_llm)
-"process": "sequential",
-"verbose": true,
-"memory": false,
-"stream": false,
-"inputs": {}
+  "tasks": [ //l'ordine delle tasks è importante perché sequenziale:
+{ // task 1 del ricercatore, cerca le informazioni
+"name": "conduct_thorough_research_about_task",
+"description": "Effettua una ricerca sull'argomento {topic} utilizzando SerperDevTool. Effettua una sola ricerca e, dopo aver ricevuto i risultati, analizzali senza effettuare ulteriori ricerche. Seleziona le fonti più pertinenti tra quelle ottenute e utilizzale per preparare il report.",
+"expected_output": "Un report markdown conciso con massimo 3 fonti pertinenti. Per ogni fonte indica titolo, URL e una breve sintesi delle informazioni rilevanti (massimo 2 righe). Concludi con una sintesi generale dell'argomento di massimo 5 righe.",
+"agent": "academic_research_specialist"
+},
+
+//task 2: il verificatore si assicura che le informazioni siano corretta
+{
+"name": "verify_research_results_task",
+"description": "Analizza il report prodotto dal precedente agente Academic Research Specialist. Verifica le informazioni contenute nel report e individua eventuali elementi che richiedono ulteriori verifiche.",
+"expected_output": "Un report finale strutturato in markdown contenente una valutazione delle informazioni prodotte dal primo agente, le eventuali criticità individuate e una distinzione chiara tra informazioni supportate e informazioni non sufficientemente supportate.",
+"agent": "verificatore_ricerca",
+"context": ["conduct_thorough_research_about_task"] //usa come input, l'output dell'agente 1  
+}
+  ],
+  
+
+  "process": "sequential",
+  "verbose": true,
+  "memory": false,
+  "stream": false,
+  "inputs": {}
 }
