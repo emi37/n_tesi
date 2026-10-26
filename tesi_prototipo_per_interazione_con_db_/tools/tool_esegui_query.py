@@ -47,4 +47,4 @@ class ToolEseguiQuery(BaseTool): # Modulo B   # modulo con 3 field per
             
         except Exception as e: # se l'agente sbaglia qualcosa, l'errore viene salvato in e
             # ritorno " e " all'agente, così che può correggere la query
-            return f"Errore sql:  {str(e)}" 
+            return f"Errore sql:  {str(e)}"
