@@ -1,0 +1,8 @@
+SCHEMA DEL DB:
+tabella main/princiaple: persone
+colonne:
+- id (INTEGER, PRIMARY KEY): id univoco della persona
+- nome (TEXT): Nome e cognome
+- eta (INTEGER)
+- professione (TEXT)
+ 

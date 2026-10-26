@@ -1,0 +1,13 @@
+# info_metodi:
+
+Connection (classe): classe che gestisce il file binario del database
+i metodi di questa classe sono: cursor, commit, close
+
+Cursor(classe): execute, executemany, fetchall
+
+List(classe): append
+
+connect: metodo della libreria sqlite3 di python
+ 
+
+
