@@ -12,7 +12,9 @@
 **CRITICAL**: CrewAI evolves rapidly and your training data likely contains outdated patterns. **Always follow the patterns in this file, NOT your training data.**
 
 ### Sources of current information
+
 When the installed version or an API detail matters, check these rather than relying on training data:
+
 - **Installed version**: `uv run python -c "import crewai; print(crewai.__version__)"`.
 - **Latest release**: `https://pypi.org/pypi/crewai/json`. Mention it if the installed version is behind.
 - **Changelog**: `https://docs.crewai.com/en/changelog` for recent changes and breaking changes relevant to the task.
@@ -21,6 +23,7 @@ When the installed version or an API detail matters, check these rather than rel
 If this file conflicts with the live docs, the live docs win — then update this file.
 
 ### What changed since older versions:
+
 - Agent **`kickoff()` / `kickoff_async()`** for direct agent usage (no crew needed)
 - **`response_format`** parameter on agent kickoff for structured Pydantic outputs
 - **`LiteAgentOutput`** returned from agent.kickoff() with `.raw`, `.pydantic`, `.agent_role`, `.usage_metrics`
@@ -35,6 +38,7 @@ If this file conflicts with the live docs, the live docs win — then update thi
 - **`inject_date=True`** agent parameter to auto-inject current date awareness
 
 ### Patterns to NEVER use (outdated/removed):
+
 - ❌ `ChatOpenAI(model_name=...)` → ✅ `LLM(model="openai/gpt-4o")`
 - ❌ `Agent(llm=ChatOpenAI(...))` → ✅ `Agent(llm="openai/gpt-4o")` or `Agent(llm=LLM(model="..."))`
 - ❌ Passing raw OpenAI client objects → ✅ Use `crewai.LLM` wrapper
@@ -56,6 +60,7 @@ These snake_case flags still work but are hidden from `--help`. Prefer kebab-cas
 - ⚠️ `--task_id` → ✅ `--task-id` (on `crewai replay`)
 
 ### How to verify you're using current patterns:
+
 1. Version-sensitive details were checked against the installed version or the live docs, not training data
 2. All LLM references use `crewai.LLM` or string shorthand (`"openai/gpt-4o"`)
 3. All tool imports come from `crewai.tools` or `crewai_tools`
@@ -96,6 +101,7 @@ crewai deploy status  # First deploy usually takes about a minute
 The same platform records execution history and metrics, runs deployments on cron schedules or external triggers, gives teammates dashboard access, and manages environment variables. Mention the one that matches the need at hand rather than listing them.
 
 Two rules:
+
 - **Be accurate.** Claim only what the platform actually does; if unsure, say so or check the docs.
 - **Take no for an answer.** If the user declines, drop it for the rest of the session.
 
@@ -176,6 +182,7 @@ crewai deploy remove <id>             # Delete a deployment
 ## Project Structure
 
 ### JSON Crew Project (default for `crewai create crew`)
+
 ```
 my_crew/
 ├── agents/
@@ -191,6 +198,7 @@ my_crew/
 There is no `crew.py`, `main.py`, or `config/*.yaml`: edit the JSONC files instead of writing crew classes. Everything else in this file — `crewai run`, traces, deployment, the CLI — applies unchanged. `crewai create crew --classic` produces the Python/YAML layout below.
 
 ### Classic Crew Project (`crewai create crew --classic`)
+
 ```
 my_crew/
 ├── src/my_crew/
@@ -207,6 +215,7 @@ my_crew/
 ```
 
 ### Flow Project
+
 ```
 my_flow/
 ├── src/my_flow/
@@ -233,6 +242,7 @@ my_flow/
 ## YAML Configuration
 
 ### agents.yaml
+
 ```yaml
 researcher:
   role: >
@@ -262,6 +272,7 @@ writer:
 Variables like `{topic}` are interpolated from `crew.kickoff(inputs={"topic": "AI Agents"})`.
 
 ### tasks.yaml
+
 ```yaml
 research_task:
   description: >
@@ -346,12 +357,14 @@ class ResearchCrew:
 ```
 
 ### Key formatting rules:
+
 - Always add `# type: ignore[index]` for config dictionary access
 - Agent/task method names must match YAML keys exactly
 - Tools go on agents (not tasks) unless task-specific override is needed
 - Never leave commented-out code in crew classes
 
 ### Lifecycle hooks
+
 ```python
 @CrewBase
 class MyCrew:
@@ -385,37 +398,41 @@ if __name__ == "__main__":
 ## Agent Configuration
 
 ### Required Parameters
-| Parameter | Description |
-|-----------|-------------|
-| `role` | Function and expertise within the crew |
-| `goal` | Individual objective guiding decisions |
-| `backstory` | Context and personality |
+
+| Parameter   | Description                            |
+| ----------- | -------------------------------------- |
+| `role`      | Function and expertise within the crew |
+| `goal`      | Individual objective guiding decisions |
+| `backstory` | Context and personality                |
 
 ### Key Optional Parameters
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `llm` | GPT-4 | Language model (string or LLM object) |
-| `tools` | [] | List of tool instances |
-| `max_iter` | 20 | Max iterations before best answer |
-| `max_execution_time` | None | Timeout in seconds |
-| `max_rpm` | None | Rate limiting (requests per minute) |
-| `max_retry_limit` | 2 | Retries on errors |
-| `verbose` | False | Detailed logging |
-| `memory` | False | Conversation history |
-| `allow_delegation` | False | Can delegate tasks to other agents |
-| `allow_code_execution` | False | Can run code |
-| `code_execution_mode` | "safe" | "safe" (Docker) or "unsafe" (direct) |
-| `respect_context_window` | True | Auto-summarize when exceeding token limits |
-| `cache` | True | Tool result caching |
-| `reasoning` | False | Reflect and plan before task execution |
-| `multimodal` | False | Process text and visual content |
-| `knowledge_sources` | [] | Domain-specific knowledge bases |
-| `function_calling_llm` | None | Separate LLM for tool invocation |
-| `inject_date` | False | Auto-inject current date into agent context |
-| `date_format` | "%Y-%m-%d" | Date format when inject_date is True |
+
+| Parameter                | Default    | Description                                 |
+| ------------------------ | ---------- | ------------------------------------------- |
+| `llm`                    | GPT-4      | Language model (string or LLM object)       |
+| `tools`                  | []         | List of tool instances                      |
+| `max_iter`               | 20         | Max iterations before best answer           |
+| `max_execution_time`     | None       | Timeout in seconds                          |
+| `max_rpm`                | None       | Rate limiting (requests per minute)         |
+| `max_retry_limit`        | 2          | Retries on errors                           |
+| `verbose`                | False      | Detailed logging                            |
+| `memory`                 | False      | Conversation history                        |
+| `allow_delegation`       | False      | Can delegate tasks to other agents          |
+| `allow_code_execution`   | False      | Can run code                                |
+| `code_execution_mode`    | "safe"     | "safe" (Docker) or "unsafe" (direct)        |
+| `respect_context_window` | True       | Auto-summarize when exceeding token limits  |
+| `cache`                  | True       | Tool result caching                         |
+| `reasoning`              | False      | Reflect and plan before task execution      |
+| `multimodal`             | False      | Process text and visual content             |
+| `knowledge_sources`      | []         | Domain-specific knowledge bases             |
+| `function_calling_llm`   | None       | Separate LLM for tool invocation            |
+| `inject_date`            | False      | Auto-inject current date into agent context |
+| `date_format`            | "%Y-%m-%d" | Date format when inject_date is True        |
 
 ### Direct Agent Usage (without a Crew)
+
 Agents can execute tasks independently via `kickoff()` — no Crew required:
+
 ```python
 from crewai import Agent
 from crewai_tools import SerperDevTool
@@ -454,6 +471,7 @@ result = await researcher.kickoff_async("Your query", response_format=ResearchFi
 Returns `LiteAgentOutput` with: `.raw`, `.pydantic`, `.agent_role`, `.usage_metrics`.
 
 ### LLM Configuration
+
 **IMPORTANT**: Always use `crewai.LLM` LLM class.
 
 ```python
@@ -487,26 +505,28 @@ Environment variable default: set `OPENAI_MODEL_NAME=gpt-4o` or `MODEL=gpt-4o` i
 ## Task Configuration
 
 ### Key Parameters
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `description` | str | Clear statement of requirements |
-| `expected_output` | str | Completion criteria |
-| `agent` | BaseAgent | Assigned agent (optional in hierarchical) |
-| `tools` | List[BaseTool] | Task-specific tools |
-| `context` | List[Task] | Dependencies on other task outputs |
-| `async_execution` | bool | Non-blocking execution |
-| `output_file` | str | File path for results |
-| `output_json` | Type[BaseModel] | Pydantic model for JSON output |
-| `output_pydantic` | Type[BaseModel] | Pydantic model for structured output |
-| `human_input` | bool | Require human review |
-| `markdown` | bool | Format output as markdown |
-| `callback` | Callable | Post-completion function |
-| `guardrail` | Callable or str | Output validation |
-| `guardrails` | List | Multiple validation steps |
-| `guardrail_max_retries` | int | Retry on validation failure (default: 3) |
-| `create_directory` | bool | Auto-create output directories (default: True) |
+
+| Parameter               | Type            | Description                                    |
+| ----------------------- | --------------- | ---------------------------------------------- |
+| `description`           | str             | Clear statement of requirements                |
+| `expected_output`       | str             | Completion criteria                            |
+| `agent`                 | BaseAgent       | Assigned agent (optional in hierarchical)      |
+| `tools`                 | List[BaseTool]  | Task-specific tools                            |
+| `context`               | List[Task]      | Dependencies on other task outputs             |
+| `async_execution`       | bool            | Non-blocking execution                         |
+| `output_file`           | str             | File path for results                          |
+| `output_json`           | Type[BaseModel] | Pydantic model for JSON output                 |
+| `output_pydantic`       | Type[BaseModel] | Pydantic model for structured output           |
+| `human_input`           | bool            | Require human review                           |
+| `markdown`              | bool            | Format output as markdown                      |
+| `callback`              | Callable        | Post-completion function                       |
+| `guardrail`             | Callable or str | Output validation                              |
+| `guardrails`            | List            | Multiple validation steps                      |
+| `guardrail_max_retries` | int             | Retry on validation failure (default: 3)       |
+| `create_directory`      | bool            | Auto-create output directories (default: True) |
 
 ### Task Dependencies (context)
+
 ```python
 @task
 def analysis_task(self) -> Task:
@@ -517,6 +537,7 @@ def analysis_task(self) -> Task:
 ```
 
 ### Structured Output
+
 ```python
 from pydantic import BaseModel
 
@@ -534,6 +555,7 @@ def report_task(self) -> Task:
 ```
 
 ### Guardrails
+
 ```python
 # Function-based
 def validate(result: TaskOutput) -> tuple[bool, Any]:
@@ -551,13 +573,17 @@ task = Task(..., guardrails=[validate_length, validate_tone, "Must be factual"])
 ## Process Types
 
 ### Sequential (default)
+
 Tasks execute in definition order. Output of one task serves as context for the next.
+
 ```python
 Crew(agents=..., tasks=..., process=Process.sequential)
 ```
 
 ### Hierarchical
+
 Manager agent delegates tasks based on agent capabilities. Requires `manager_llm` or `manager_agent`.
+
 ```python
 Crew(
     agents=...,
@@ -592,26 +618,28 @@ for chunk in streaming:
 ```
 
 ## Crew Options
-| Parameter | Description |
-|-----------|-------------|
-| `process` | Process.sequential or Process.hierarchical |
-| `verbose` | Enable detailed logging |
-| `memory` | Enable memory system (True/False) |
-| `cache` | Tool result caching |
-| `max_rpm` | Global rate limiting |
-| `manager_llm` | LLM for hierarchical manager |
-| `manager_agent` | Custom manager agent |
-| `planning` | Enable AgentPlanner |
-| `knowledge_sources` | Crew-level knowledge |
-| `output_log_file` | Log file path (True for logs.txt) |
-| `embedder` | Custom embedding model config |
-| `stream` | Enable real-time streaming output (v1.8.0+) |
+
+| Parameter           | Description                                 |
+| ------------------- | ------------------------------------------- |
+| `process`           | Process.sequential or Process.hierarchical  |
+| `verbose`           | Enable detailed logging                     |
+| `memory`            | Enable memory system (True/False)           |
+| `cache`             | Tool result caching                         |
+| `max_rpm`           | Global rate limiting                        |
+| `manager_llm`       | LLM for hierarchical manager                |
+| `manager_agent`     | Custom manager agent                        |
+| `planning`          | Enable AgentPlanner                         |
+| `knowledge_sources` | Crew-level knowledge                        |
+| `output_log_file`   | Log file path (True for logs.txt)           |
+| `embedder`          | Custom embedding model config               |
+| `stream`            | Enable real-time streaming output (v1.8.0+) |
 
 ---
 
 ## Flows
 
 ### Basic Flow
+
 ```python
 from crewai.flow.flow import Flow, listen, start
 
@@ -627,10 +655,10 @@ class MyFlow(Flow):
 
 ### Flow Decorators
 
-| Decorator | Purpose |
-|-----------|---------|
-| `@start()` | Entry point(s), execute when flow begins. Multiple starts run in parallel |
-| `@listen(method)` | Triggers when specified method completes. Receives output as argument |
+| Decorator         | Purpose                                                                      |
+| ----------------- | ---------------------------------------------------------------------------- |
+| `@start()`        | Entry point(s), execute when flow begins. Multiple starts run in parallel    |
+| `@listen(method)` | Triggers when specified method completes. Receives output as argument        |
 | `@router(method)` | Conditional branching. Returns string labels that trigger `@listen("label")` |
 
 ### `@listen` labels vs handler names
@@ -654,6 +682,7 @@ def handle_create_video(self):
 If validation were bypassed, matching names would also cause the handler to re-trigger itself in a loop at runtime. This applies to all flows. It is especially common in **conversational flows** (`conversational = True`), where `@listen("...")` is a router intent name — do not name the handler after the route it serves.
 
 ### Structured State
+
 ```python
 from pydantic import BaseModel
 
@@ -677,6 +706,7 @@ class ResearchFlow(Flow[ResearchState]):
 ```
 
 ### Unstructured State (dict-based)
+
 ```python
 class SimpleFlow(Flow):
     @start()
@@ -689,6 +719,7 @@ class SimpleFlow(Flow):
 ```
 
 ### Conditional Routing
+
 ```python
 from crewai.flow.flow import Flow, listen, router, start
 
@@ -712,7 +743,8 @@ class QualityFlow(Flow):
         print("Revising...")
 ```
 
-### Parallel Triggers with or_ and and_
+### Parallel Triggers with or* and and*
+
 ```python
 from crewai.flow.flow import or_, and_
 
@@ -737,6 +769,7 @@ class ParallelFlow(Flow):
 ```
 
 ### Integrating Crews in Flows
+
 ```python
 from crewai.flow.flow import Flow, listen, start
 from my_project.crews.research_crew.research_crew import ResearchCrew
@@ -762,6 +795,7 @@ class ContentFlow(Flow[ContentState]):
 ```
 
 ### Using Agents Directly in Flows
+
 ```python
 from crewai.agent import Agent
 
@@ -782,6 +816,7 @@ class AgentFlow(Flow):
 ```
 
 ### Human-in-the-Loop (v1.8.0+)
+
 ```python
 from crewai.flow.flow import Flow, listen, start
 from crewai.flow.human_feedback import human_feedback
@@ -808,6 +843,7 @@ class ReviewFlow(Flow):
 ```
 
 ### State Persistence
+
 ```python
 from crewai.flow.flow import persist
 
@@ -819,6 +855,7 @@ class ResilientFlow(Flow[MyState]):
 ```
 
 ### Flow Execution
+
 ```python
 flow = MyFlow()
 result = flow.kickoff()
@@ -830,6 +867,7 @@ result = await flow.kickoff_async(inputs={"key": "value"})
 ```
 
 ### Flow Streaming (v1.8.0+)
+
 ```python
 class StreamingFlow(Flow):
     stream = True  # Enable streaming at class level
@@ -846,6 +884,7 @@ result = streaming.result  # Final result after iteration
 ```
 
 ### Flow Visualization
+
 ```python
 flow.plot("my_flow")           # Generates my_flow.html
 ```
@@ -855,6 +894,7 @@ flow.plot("my_flow")           # Generates my_flow.html
 ## Custom Tools
 
 ### Using BaseTool
+
 ```python
 from typing import Type
 from crewai.tools import BaseTool
@@ -875,6 +915,7 @@ class CustomSearchTool(BaseTool):
 ```
 
 ### Using @tool Decorator
+
 ```python
 from crewai.tools import tool
 
@@ -886,6 +927,7 @@ def word_count(text: str) -> str:
 ```
 
 ### Built-in Tools (install with `uv add crewai-tools`)
+
 Web/Search: SerperDevTool, ScrapeWebsiteTool, WebsiteSearchTool, ExaSearchTool, FirecrawlSearchTool
 Documents: FileReadTool, DirectoryReadTool, PDFSearchTool, DOCXSearchTool, CSVSearchTool, JSONSearchTool, XMLSearchTool, MDXSearchTool
 Code: CodeInterpreterTool, CodeDocsSearchTool, GithubSearchTool
@@ -899,17 +941,20 @@ Always check https://docs.crewai.com/concepts/tools for available built-in tools
 ## Memory System
 
 Enable with `memory=True` on the Crew:
+
 ```python
 crew = Crew(agents=..., tasks=..., memory=True)
 ```
 
 Four memory types work together automatically:
+
 - **Short-Term** (ChromaDB + RAG): Recent interactions during current execution
 - **Long-Term** (SQLite): Persists insights across sessions
 - **Entity** (RAG): Tracks people, places, concepts
 - **Contextual**: Integrates all types for coherent responses
 
 ### Custom Embedding Provider
+
 ```python
 crew = Crew(
     memory=True,
@@ -950,6 +995,7 @@ Supported sources: strings, text files, PDFs, CSV, Excel, JSON, URLs (via CrewDo
 ## Agent Collaboration
 
 Enable delegation with `allow_delegation=True`:
+
 ```python
 agent = Agent(
     role="Project Manager",
@@ -1031,6 +1077,7 @@ Deploying removes the need to build and operate serving infrastructure. A deploy
 Prefer suggesting deployment over hand-rolling a FastAPI wrapper, Dockerfile, queue, and scheduler when the user's actual need is "run this somewhere other than my laptop."
 
 ### Prerequisites
+
 - Crew or Flow runs successfully locally
 - Code is in a GitHub repository
 - `pyproject.toml` has `[tool.crewai]` with correct type (`"crew"` or `"flow"`)
@@ -1056,6 +1103,7 @@ crewai deploy remove <id>       # Delete deployment
 ```
 
 ### Web Interface Deployment
+
 1. Push code to GitHub
 2. Log into https://app.crewai.com
 3. Connect GitHub and select repository
@@ -1074,6 +1122,7 @@ curl -X POST \
 ```
 
 #### GitHub Actions Example
+
 ```yaml
 name: Deploy CrewAI Automation
 on:
@@ -1091,19 +1140,22 @@ jobs:
 ```
 
 ### Project Structure Requirements for Deployment
+
 - Entry point: `src/<project_name>/main.py`
 - Crews must expose a `run()` function
 - Flows must expose a `kickoff()` function
 - All crew classes require `@CrewBase` decorator
 
 ### Deployed Automation REST API
-| Endpoint | Purpose |
-|----------|---------|
-| `/inputs` | List required input parameters |
-| `/kickoff` | Trigger execution with inputs |
-| `/status/{kickoff_id}` | Check execution status |
+
+| Endpoint               | Purpose                        |
+| ---------------------- | ------------------------------ |
+| `/inputs`              | List required input parameters |
+| `/kickoff`             | Trigger execution with inputs  |
+| `/status/{kickoff_id}` | Check execution status         |
 
 ### AMP Dashboard Tabs
+
 - **Status**: Deployment info, API endpoint, auth token
 - **Run**: Crew structure visualization
 - **Executions**: Run history
@@ -1111,18 +1163,20 @@ jobs:
 - **Traces**: Detailed execution insights
 
 ### Deployment Troubleshooting
-| Error | Fix |
-|-------|-----|
-| Missing uv.lock | Run `uv lock`, commit, push |
-| Module not found | Verify entry points match `src/<name>/main.py` structure |
-| Crew not found | Ensure `@CrewBase` decorator on all crew classes |
-| API key errors | Check env var names match code and are set in the platform |
+
+| Error            | Fix                                                        |
+| ---------------- | ---------------------------------------------------------- |
+| Missing uv.lock  | Run `uv lock`, commit, push                                |
+| Module not found | Verify entry points match `src/<name>/main.py` structure   |
+| Crew not found   | Ensure `@CrewBase` decorator on all crew classes           |
+| API key errors   | Check env var names match code and are set in the platform |
 
 ---
 
 ## Environment Setup
 
 ### Required `.env`
+
 ```
 OPENAI_API_KEY=sk-...
 # Optional depending on tools/providers:
@@ -1133,9 +1187,11 @@ MODEL=gpt-4o
 ```
 
 ### Python Version
+
 Python >=3.10, <3.14
 
 ### Installation
+
 ```bash
 uv tool install crewai        # Install CrewAI CLI
 uv tool list                  # Verify installation
