@@ -6,7 +6,8 @@
     // TASK DEL PRIMO AGENTE : tradurre l'input dell'utente in linguaggio SQL
     {
       "name": "generazione_query_sql",
-      "description": "Leggi lo schema del database SQLite: {schema_db}. Basandoti SOLO ED ESCLUSIVAMENTE su questo schema, scrivi la query SQL per rispondere alla seguente richiesta dell'utente: '{user_query}'.",
+      // lo schema non arriva più come {schema_db}: l'agente lo legge da solo con tool_leggi_schema (che apre db/schema.txt)
+      "description": "Usa il tool tool_leggi_schema per leggere lo schema del database SQLite. Basandoti SOLO ED ESCLUSIVAMENTE su questo schema, scrivi la query SQL per rispondere alla seguente richiesta dell'utente: '{user_query}'.",
       "expected_output": "Mostra sempre il ragionamento logico passo-passo che hai fatto per risolvere il problema e superare eventuali ostacoli, seguito esclusivamente dal codice della query SQL e pronto per l'esecuzione.",
       "agent": "agente_1_generatore_query"
     }
