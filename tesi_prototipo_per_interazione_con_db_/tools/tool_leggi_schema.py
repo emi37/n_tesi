@@ -16,7 +16,7 @@ perc_schema = Path(__file__).resolve().parent.parent / "db" / "schema.txt"
 
 class ToolLeggiSchema(BaseTool):
 #(name e description sono le etichette che l'agente 1 legge per capire quando usare il tool)
-    name: str = "tool_leggi_schema"
+    name: str = "tool_leggi_schema" 
     description: str=(
         "Legge lo schema del database SQLite locale(tabelle, colonne e tutto il resto) e lo restituisce come testo. "
         "Usalo PRIMA di scrivere o controllare una query, per sapere quali tabelle e colonne esistono davvero."
