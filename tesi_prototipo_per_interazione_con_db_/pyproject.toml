@@ -5,7 +5,7 @@ description = "TESI_prototipo_per_interazione_con_db_ using crewAI"
 authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<3.14"
 dependencies = [
-    "crewai[tools]>=1.15.22,<2.0.0"
+    "crewai[litellm,tools]>=1.15.22,<2.0.0",
 ]
 
 [build-system]

@@ -15,6 +15,6 @@
   //----------------------------------//
   "process": "sequential", // molto importante perchè definisce che le task debbano essere svolte in ordine
   "verbose": true,
-  "memory": true,
+  "memory": false,
   "inputs": {}
 }
