@@ -22,27 +22,42 @@ os.makedirs("db", exist_ok=True)
 con_db= sqlite3.connect("db/database_tesi.db")
 cursore_db = con_db.cursor()
 
-# crea una tabella persone con attibuti: 
+# cancello la tabella se esiste già e la ricreo da zero: con "CREATE TABLE IF NOT EXISTS" una tabella vecchia restava com'era
+  # e le modifiche alla struttura (come COLLATE NOCASE qui sotto) non sarebbero mai state applicate
+cursore_db.execute("DROP TABLE IF EXISTS persone")
+
+# crea una tabella persone con attibuti:
+# COLLATE NOCASE sulle colonne di testo = nei confronti non conta se una lettera è maiuscola o minuscola
+# (es. WHERE lavoro = 'informatico' trova anche 'Informatico'), così l'agente non deve preoccuparsi delle maiuscole
+   # sulle colonne numeriche (id, eta) non serve, i numeri non hanno maiuscole
 cursore_db.execute('''
-    CREATE TABLE IF NOT EXISTS persone (
+    CREATE TABLE persone (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
+        nome TEXT NOT NULL COLLATE NOCASE,
         eta INTEGER NOT NULL,
-        professione TEXT
+        lavoro TEXT COLLATE NOCASE
     )
 ''')
 
-# pulisco la tabella e inserisco dei dati a caso nella tabella 
-cursore_db.execute("DELETE FROM persone")
+# inserisco i dati di prova nella tabella: ogni riga è (nome, eta, lavoro), cioè 3 valori come le 3 colonne della INSERT
+  # sono i miei amici (solo il nome di battesimo, niente cognomi); le età sono messe a caso, i lavori quasi tutti veri
 utenti = [
-    ("Alice Montauti", 24, "Designer"),
-    ("Luciani Emidio", 24, "Informatico"),
-    ("Davide Berardinelli", 28, "Dottore"),
-    ("Marco Berardinelli", 22, "Meccanico"),
-    ("Giuseppe Sturba", 30, "Poliziotto"),
-    ("Filippo Rastelli", 26, "Informatico")
+    ("Emidio", 24, "Informatico"),
+    ("Alice", 18, "Designer"),
+    ("Alice R.", 29, "Ingegnere"),   
+    ("Giuseppe", 61, "Poliziotto"),
+    ("Andrea", 43, "Impiegato"),
+    ("Carmine", 54, "Cameriere"),
+    ("Dalila", 19, "Tuttofare"),
+    ("Davide", 50, "Biotecnologo"),
+    ("Filippo", 71, "Dottore"),
+    ("Alessandro", 52, "Operaio") ,
+    ("Francesca", 31, "Sommelier"),  
+    ("Marco", 40, "Meccanico"),      
+    ("Sara", 18, "Cameriera")
+      
 ]
-cursore_db.executemany("INSERT INTO persone (nome, eta, professione) VALUES (?, ?, ?)", utenti)
+cursore_db.executemany("INSERT INTO persone (nome, eta, lavoro) VALUES (?, ?, ?)", utenti)
 con_db.commit()
 con_db.close() # chiude la connessione al db 
 
@@ -71,8 +86,7 @@ cursore_db.execute("SELECT name FROM sqlite_master WHERE type='table' AND name !
 # la query sopra 
 tabelle_nel_db = cursore_db.fetchall() # prende i nomi di tutte le tabelle che trova sul db e le mette nella list  tabelle_nel_db
 
-schema_righe = ["struttura del db per l' agente: \n"] # è una list
-# (non posso usare add perchè non è un metodo della classe list)
+schema_righe = ["struttura del db per l' agente: \n"]
 
 # faccio 2 for, uno che scorre le tabelle del db e uno annidato che scorre gli attributi di ogni tabella  
 for tab in tabelle_nel_db:
@@ -84,7 +98,12 @@ for tab in tabelle_nel_db:
     colonne = cursore_db.fetchall() 
     
     for col in colonne: # scorro tutte le colonne/attributi dalla tabella in cui mi trovo(tab)
-        schema_righe.append(f"- attributo: '{col[1]}' (tipo: {col[2]})")
+        extra = "" # qui ci metto le info in più: se è chiave primaria (col[5]) e se è obbligatorio, cioè NOT NULL (col[3])
+        if col[5]:
+            extra += ", chiave primaria"
+        if col[3]:
+            extra += ", obbligatorio"
+        schema_righe.append(f"- attributo: '{col[1]}' (tipo: {col[2]}{extra})")
         # risultato stampato: -->  
         # - attributo: 'eta' (tipo: INTEGER)
     schema_righe.append("") # questo serve a dividere visivamnte le tabelle nel file di testo, cosi da capire quando finisce una tabella e ne inizia un'altra.

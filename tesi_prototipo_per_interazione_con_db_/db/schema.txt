@@ -1,8 +1,8 @@
-SCHEMA DEL DB:
-tabella main/princiaple: persone
-colonne:
-- id (INTEGER, PRIMARY KEY): id univoco della persona
-- nome (TEXT): Nome e cognome
-- eta (INTEGER)
-- professione (TEXT)
- 
+struttura del db per l' agente: 
+
+Tabella principale: persone
+Colonne della tabella: 
+- attributo: 'id' (tipo: INTEGER, chiave primaria)
+- attributo: 'nome' (tipo: TEXT, obbligatorio)
+- attributo: 'eta' (tipo: INTEGER, obbligatorio)
+- attributo: 'lavoro' (tipo: TEXT)
