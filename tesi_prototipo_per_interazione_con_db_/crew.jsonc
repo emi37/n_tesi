@@ -1,7 +1,7 @@
 {
   "name": "TESI_prototipo_per_interazione_con_db_",
 
-  "agents": ["agente_1_generatore_query"],
+  "agents": ["agente_1_generatore_query", "agente_2_revisore_query"],
   "tasks": [
     // TASK DEL PRIMO AGENTE : tradurre l'input dell'utente in linguaggio SQL
     {
@@ -10,6 +10,14 @@
       "description": "Usa il tool tool_leggi_schema per leggere lo schema del database SQLite. Basandoti SOLO ED ESCLUSIVAMENTE su questo schema, scrivi la query SQL per rispondere alla seguente richiesta dell'utente: '{user_query}'.",
       "expected_output": "Mostra sempre il ragionamento logico passo-passo che hai fatto per risolvere il problema e superare eventuali ostacoli, seguito esclusivamente dal codice della query SQL e pronto per l'esecuzione.",
       "agent": "agente_1_generatore_query"
+    },
+
+    {
+      "name": "revisione_query_sql",
+      // la query dell'agente 1 gli arriva da sola come contesto (process sequential), lo schema lo legge con tool_leggi_schema
+      "description": "Usa il tool tool_leggi_schema per leggere lo schema del database SQLite. Controlla che la query SQL generata dell'agente 1, usi solo tabelle e colonne di attributi presenti nello schema e risponda alla richiesta dell'utente: '{user_query}'. Se trovi un errore, correggilo. Nei confronti tra testi usa LOWER(colonna). Se la richiesta chiede dati che non esistono nello schema, non inventare nulla (non avere allucinazioni) e setta l'esito della query a: FALSE(0).",
+      "expected_output": "L'esito può essere di 3 tipi. ESITO: TRUE(1), CORRETTA oppure FALSE(0). MOTIVO: in breve, cosa hai controllato o cambiato. QUERY FINALE: SOLO la query SQL da eseguire, oppure 'nessuna query' se l'esito è: FALSE(0).",
+      "agent": "agente_2_revisore_query"
     }
   ],
 
