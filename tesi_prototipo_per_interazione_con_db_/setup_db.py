@@ -97,15 +97,10 @@ for tab in tabelle_nel_db:
     cursore_db.execute(f"PRAGMA table_info({nome_tabella});") #è il metodo standard diciamo per leggere le colonne 
     colonne = cursore_db.fetchall() 
     
-    for col in colonne: # scorro tutte le colonne/attributi dalla tabella in cui mi trovo(tab)
-        extra = "" # qui ci metto le info in più: se è chiave primaria (col[5]) e se è obbligatorio, cioè NOT NULL (col[3])
-        if col[5]:
-            extra += ", chiave primaria"
-        if col[3]:
-            extra += ", obbligatorio"
-        schema_righe.append(f"- attributo: '{col[1]}' (tipo: {col[2]}{extra})")
-        # risultato stampato: -->  
-        # - attributo: 'eta' (tipo: INTEGER)
+    for col in colonne: # scorro tutte le colonne/attributi dalla tabella in cui mi trovo
+        # per ogni colonna aggiungo una riga allo schema: col[1] è il nome della colonna, col[2] è il tipo
+        schema_righe.append(f"- attributo: '{col[1]}' (tipo: {col[2]})")
+        #per la colonna età nello schema sarebbe:   - attributo: 'eta' (tipo: INTEGER)
     schema_righe.append("") # questo serve a dividere visivamnte le tabelle nel file di testo, cosi da capire quando finisce una tabella e ne inizia un'altra.
 
 con_db.close()
@@ -137,4 +132,4 @@ print("creata la cartella 'db' con dentro 'database_tesi.db' e 'schema.txt'.")
 
 
 # ----------------------------------------------
-# f è il format, cioè toglie le {}
+# f è il format, cioè toglie le {} 

@@ -2,7 +2,7 @@ struttura del db per l' agente:
 
 Tabella principale: persone
 Colonne della tabella: 
-- attributo: 'id' (tipo: INTEGER, chiave primaria)
-- attributo: 'nome' (tipo: TEXT, obbligatorio)
-- attributo: 'eta' (tipo: INTEGER, obbligatorio)
+- attributo: 'id' (tipo: INTEGER)
+- attributo: 'nome' (tipo: TEXT)
+- attributo: 'eta' (tipo: INTEGER)
 - attributo: 'lavoro' (tipo: TEXT)
