@@ -16,7 +16,7 @@
       "name": "revisione_query_sql",
       // la query dell'agente 1 gli arriva da sola come contesto (process sequential), lo schema lo legge con tool_leggi_schema
       "description": "Usa il tool tool_leggi_schema per leggere lo schema del database SQLite. Controlla che la query SQL generata dall'agente 1 usi solo tabelle e colonne di attributi presenti nello schema e risponda alla richiesta dell'utente: '{user_query}'. Se trovi un errore, correggilo. Se la richiesta chiede dati che non esistono nello schema, non inventare nulla (non avere allucinazioni) e imposta l'esito a 0.",
-      "expected_output": "L'esito può essere di 3 tipi. ESITO: 1 = Valida, 2 = Corretta, 0 = Bloccata. MOTIVO: in breve, cosa hai controllato o cambiato. QUERY FINALE: SOLO la query SQL da eseguire, oppure 'nessuna query' se l'esito è: 0.",
+      "expected_output": "L'esito può essere di 3 tipi. ESITO: 0 = Bloccata , 0.5 = Modificata , 1 = Valida . MOTIVO: in breve, cosa hai controllato o cambiato. QUERY FINALE: SOLO la query SQL da eseguire, oppure 'nessuna query' se l'esito è: 0.",
       "agent": "agente_2_revisore_query"
     }
   ],
