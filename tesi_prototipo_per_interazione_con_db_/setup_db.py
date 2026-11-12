@@ -22,14 +22,10 @@ os.makedirs("db", exist_ok=True)
 con_db= sqlite3.connect("db/database_tesi.db")
 cursore_db = con_db.cursor()
 
-# cancello la tabella se esiste già e la ricreo da zero: con "CREATE TABLE IF NOT EXISTS" una tabella vecchia restava com'era
-  # e le modifiche alla struttura (come COLLATE NOCASE qui sotto) non sarebbero mai state applicate
 cursore_db.execute("DROP TABLE IF EXISTS persone")
 
-# crea una tabella persone con attibuti:
-# COLLATE NOCASE sulle colonne di testo = nei confronti non conta se una lettera è maiuscola o minuscola
-# (es. WHERE lavoro = 'informatico' trova anche 'Informatico'), così l'agente non deve preoccuparsi delle maiuscole
-   # sulle colonne numeriche (id, eta) non serve, i numeri non hanno maiuscole
+# crea una tabella "persone"
+# COLLATE NOCASE permette di non tener conto se una lettera è maiuscola o minuscola nei confronti 
 cursore_db.execute('''
     CREATE TABLE persone (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,8 +35,6 @@ cursore_db.execute('''
     )
 ''')
 
-# inserisco i dati di prova nella tabella: ogni riga è (nome, eta, lavoro), cioè 3 valori come le 3 colonne della INSERT
-  # sono i miei amici (solo il nome di battesimo, niente cognomi); le età sono messe a caso, i lavori quasi tutti veri
 utenti = [
     ("Emidio", 24, "Informatico"),
     ("Alice", 18, "Designer"),
