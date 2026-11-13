@@ -1,5 +1,5 @@
 """ Cosa fa:
-    1 - l'agente 1 lo chiama passandogli la richiesta dell'utente (Groq non accetta tool senza nessun parametro);
+    1 - entrambi gli agenti chiamano il tool passandogli la richiesta dell'utente (Groq non accetta tool senza nessun parametro);
     2 - trova il file db/schema.txt partendo dalla posizione di questo file (così funziona da qualsiasi cartella venga lanciato il crew);
     3 - legge il file e restituisce all'agente il testo dello schema, che l'agente usa per scrivere (agente 1) o controllare (agente 2) la query.
 """
