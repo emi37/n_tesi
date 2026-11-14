@@ -27,7 +27,7 @@
       // task agente 3
       "name": "esecuzione_query_sql",
       "description": "Usa il tool tool_esegui_query per eseguire la query generata dal primo agente e controllata dal secondo agente nel database SQLite.",
-      "expected_output": "esegui la query + breve report con il risultato della query e la query eseguita.",
+      "expected_output": "Se l'esito riportato dall'agente 2 è 0 non eseguire IN NESSUN MODO la query che ti arriva dall'agente 2 poichè è BLOCCATA; altrimenti esegui la query solo nei casi 0.5 e 1 riportati dall'agente 2. Poi dici la query che è stata eseguita è: metti qui la query passata dall'agente 2 a te (agente 3) e genera alla fine un breve report con i risultati estratti dalla query sql eseguita sul db.",
       "agent": "agente_3_esecutore_query"
     }
   ],
