@@ -1,7 +1,11 @@
 {
   "name": "TESI_prototipo_per_interazione_con_db_",
 
-  "agents": ["agente_1_generatore_query", "agente_2_revisore_query"],
+  "agents": [
+    "agente_1_generatore_query",
+    "agente_2_revisore_query",
+    "agente_3_esecutore_query"
+  ],
   "tasks": [
     // TASK DEL PRIMO AGENTE : tradurre l'input dell'utente in linguaggio SQL
     {
