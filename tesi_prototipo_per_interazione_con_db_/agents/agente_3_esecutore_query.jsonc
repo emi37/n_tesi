@@ -1,0 +1,11 @@
+{
+  "role": "SQL Executor",
+  "goal": "",
+  "backstory": "",
+  "llm": { "python": "llm_groq.groq_llm" },
+  "tools": ["custom:tool_esegui_query"], // richiama il tool per eseguire la query generata dall'agente 1 e controllata dall'agente 2
+  "settings": {
+    "verbose": true,
+    "allow_delegation": false
+  }
+}
