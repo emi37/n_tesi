@@ -46,9 +46,11 @@ utenti = [
     ("Davide", 50, "Biotecnologo"),
     ("Filippo", 71, "Dottore"),
     ("Alessandro", 52, "Operaio") ,
-    ("Francesca", 31, "Sommelier"),  
+    ("Francesca", 31, "Grafica"),  
     ("Marco", 40, "Meccanico"),      
-    ("Sara", 18, "Cameriera")
+    ("Sara", 18, "Nutrizionista"),
+    ("Edoardo", 30, "R6 Pro player"),
+    ("Dorian", 35, "Regista")
       
 ]
 cursore_db.executemany("INSERT INTO persone (nome, eta, lavoro) VALUES (?, ?, ?)", utenti)
