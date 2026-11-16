@@ -1,8 +1,36 @@
 struttura del db per l' agente: 
 
-Tabella principale: persone
+Tabella principale: utenti
 Colonne della tabella: 
 - attributo: 'id' (tipo: INTEGER)
 - attributo: 'nome' (tipo: TEXT)
 - attributo: 'eta' (tipo: INTEGER)
 - attributo: 'lavoro' (tipo: TEXT)
+
+Tabella principale: dispositivi
+Colonne della tabella: 
+- attributo: 'dispositivo_id' (tipo: INTEGER)
+- attributo: 'proprietario_id' (tipo: INTEGER)
+- attributo: 'tipo' (tipo: TEXT)
+- attributo: 'aggiornato' (tipo: INTEGER)
+- collegamento: 'proprietario_id' si collega a 'id' della tabella utenti
+
+Tabella principale: accessi
+Colonne della tabella: 
+- attributo: 'accesso_id' (tipo: INTEGER)
+- attributo: 'utente_id' (tipo: INTEGER)
+- attributo: 'dispositivo_id' (tipo: INTEGER)
+- attributo: 'data_ora' (tipo: TEXT)
+- attributo: 'riuscito' (tipo: INTEGER)
+- attributo: 'citta' (tipo: TEXT)
+- collegamento: 'dispositivo_id' si collega a 'dispositivo_id' della tabella dispositivi
+- collegamento: 'utente_id' si collega a 'id' della tabella utenti
+
+Tabella principale: allarmi
+Colonne della tabella: 
+- attributo: 'allarme_id' (tipo: INTEGER)
+- attributo: 'accesso_id' (tipo: INTEGER)
+- attributo: 'gravita' (tipo: TEXT)
+- attributo: 'gestito_da' (tipo: INTEGER)
+- collegamento: 'gestito_da' si collega a 'id' della tabella utenti
+- collegamento: 'accesso_id' si collega a 'accesso_id' della tabella accessi
